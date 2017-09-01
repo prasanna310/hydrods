@@ -43,9 +43,10 @@ def create_pytopkapi_hdf5_from_nc_unit_mm_per_timestep(nc_rain, nc_et, mask_tiff
     root = Dataset(nc_rain, 'r')
 
     if source =='ueb':
-        ppt = root.variables['SWIT'][:] * 1000.0  # all the precipitation records, in 3d array (time * x * y)
+        ppt = root.variables['SWIT'][:] * 1000.0    # all the precipitation records, in 3d array (time * x * y)
+        ppt = numpy.flip(ppt, axis=1)               # UEB array is mirrored in y axis
         print ('mask shape: %s, Original nc_rain_shape %s' % (mask.shape, ppt.shape))
-        ppt[ppt<0.001]=0
+        # ppt[ppt<0.001]=0
         ppt = change_timestep(ppt_ar=ppt, new_timestep_hr=6, old_timestep_hr=24)
         print ('Progress --> PPT: Max, Min, and mean value of ppt: ', ppt.max(), ppt.min(), ppt.mean())
     else:  #elif source=='daymet':
