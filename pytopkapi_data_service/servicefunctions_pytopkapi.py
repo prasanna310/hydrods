@@ -612,6 +612,7 @@ def change_timestep_of_forcing_netcdf(input_netcdf,  output_rain_fname, output_e
     from netCDF4 import Dataset
     root = Dataset(input_netcdf)
     rain_ar = root.variables['SWIT'][:]
+    rain_ar =  np.flip(rain_ar, axis=1)
     root.close()
 
     print ('Progress >> Input netCDF read. The dimension is ', rain_ar.shape)
@@ -3504,11 +3505,6 @@ def command_string_to_zip(command_string=None, in_zip=None, out_zip=None):
         with zipfile.ZipFile(in_zip, "r") as zip_ref:
             zip_ref.extractall()
     return call_subprocess(command_string, command_string + ' could not be executed')
-
-
-
-
-
 
 
 
